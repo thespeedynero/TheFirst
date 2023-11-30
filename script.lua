@@ -1,13 +1,30 @@
 -- Roblox Lua Script
 -- Author: thespeedynero
 
-local humanoid = game:GetService("Players").LocalPlayer.Character.Humanoid
-humanoid.WalkSpeed = 100
-humanoid.JumpPower = 150
-local InfiniteJumpEnabled = true
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
 
-game:GetService("UserInputService").JumpRequest:Connect(function()
-    if InfiniteJumpEnabled then
-        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-    end
+local function setupCharacter(character)
+    local humanoid = character:WaitForChild("Humanoid")
+    humanoid.WalkSpeed = 100
+    humanoid.JumpPower = 100
+
+    local InfiniteJumpEnabled = true
+
+    UserInputService.JumpRequest:Connect(function()
+        if InfiniteJumpEnabled then
+            humanoid:ChangeState("Jumping")
+        end
+    end)
+end
+
+-- Setup for LocalPlayer
+local localPlayer = Players.LocalPlayer
+if localPlayer and localPlayer.Character then
+    setupCharacter(localPlayer.Character)
+end
+
+-- Listen for LocalPlayer's character being added
+localPlayer.CharacterAdded:Connect(function(character)
+    setupCharacter(character)
 end)
