@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local function setupCharacter(character)
     local humanoid = character:WaitForChild("Humanoid")
     humanoid.WalkSpeed = 100
-    humanoid.JumpPower = 100
+    humanoid.JumpPower = 150
 
     local InfiniteJumpEnabled = true
 
