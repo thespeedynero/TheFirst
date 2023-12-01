@@ -1,6 +1,8 @@
 -- Roblox Lua Script
 -- Author: thespeedynero
 
+local hasGivenTool = false
+
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 
@@ -18,13 +20,29 @@ local function setupCharacter(character)
     end)
 end
 
--- Setup for LocalPlayer
-local localPlayer = Players.LocalPlayer
-if localPlayer and localPlayer.Character then
-    setupCharacter(localPlayer.Character)
-end
+while true do
+    wait(1)
+    local mouse = game.Players.LocalPlayer:GetMouse()
+    
+    if not hasGivenTool then
+        local tool = Instance.new("Tool")
+        tool.RequiresHandle = false
+        tool.Name = "Permanent Tp Tool"
+        tool.Activated:Connect(function()
+            local pos = mouse.Hit + Vector3.new(0, 2.5, 0)
+            pos = CFrame.new(pos.X, pos.Y, pos.Z)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+        end)
+        tool.Parent = game.Players.LocalPlayer.Backpack
+        hasGivenTool = true
+    end
 
--- Listen for LocalPlayer's character being added
-localPlayer.CharacterAdded:Connect(function(character)
-    setupCharacter(character)
-end)
+    local localPlayer = Players.LocalPlayer
+    if localPlayer and localPlayer.Character then
+        setupCharacter(localPlayer.Character)
+    end
+
+    localPlayer.CharacterAdded:Connect(function(character)
+        setupCharacter(character)
+    end)
+end
