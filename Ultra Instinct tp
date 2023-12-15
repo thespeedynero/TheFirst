@@ -1,0 +1,35 @@
+local Players = game:GetService("Players")
+
+local function onCharacterAdded(character)
+    local hasGivenTool = false
+    local mouse = game.Players.LocalPlayer:GetMouse()
+
+    if not hasGivenTool then
+        local tool = Instance.new("Tool")
+        tool.RequiresHandle = false
+        tool.Name = "Ultra instinct"
+
+        local soundId = "rbxassetid://153613030"
+        local sound = Instance.new("Sound")
+        sound.SoundId = soundId
+        sound.Parent = tool
+
+        tool.Activated:Connect(function()
+            local pos = mouse.Hit + Vector3.new(0, 2.5, 0)
+            pos = CFrame.new(pos.X, pos.Y, pos.Z)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+
+            -- Play the sound when the tool is activated
+            sound:Play()
+        end)
+
+        tool.Parent = game.Players.LocalPlayer.Backpack
+        hasGivenTool = true
+    end
+end
+
+game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+if game.Players.LocalPlayer.Character then
+    onCharacterAdded(game.Players.LocalPlayer.Character)
+end
