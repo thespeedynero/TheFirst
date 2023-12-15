@@ -1,3 +1,6 @@
+--Roblox lua script
+--Author thespeedynero
+
 local Players = game:GetService("Players")
 
 local function onCharacterAdded(character)
