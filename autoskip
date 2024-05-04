@@ -20,5 +20,5 @@ while true do
     else
         print("Script is stopped...")
     end
-    wait(0.3)
+    wait(0.1)
 end
