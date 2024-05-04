@@ -16,9 +16,6 @@ while true do
         }
 
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-        print("Script is running...")
-    else
-        print("Script is stopped...")
     end
     wait(0.1)
 end
