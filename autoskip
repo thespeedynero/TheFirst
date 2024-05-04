@@ -3,7 +3,6 @@ local runScript = true
 game:GetService("Players").LocalPlayer.Chatted:Connect(function(message)
     if message == "/e stop" then
         runScript = false
-        break
     elseif message == "/e start" then
         runScript = true
     end
