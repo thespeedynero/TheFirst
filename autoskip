@@ -2,9 +2,9 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 
 local PhantomForcesWindow = Library:NewWindow("TDS")
 
-local KillingCheats = PhantomForcesWindow:NewSection("Auto skip")
+local Autoskip = PhantomForcesWindow:NewSection("Auto skip")
 
-KillingCheats:CreateToggle("Auto Skip", function(value)
+Autoskip:CreateToggle("Auto Skip", function(value)
     local args = {
     [1] = "Voting",
     [2] = "Skip"
