@@ -1,21 +1,15 @@
-local runScript = true
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
-game:GetService("Players").LocalPlayer.Chatted:Connect(function(message)
-    if message == "/e stop" then
-        runScript = false
-    elseif message == "/e start" then
-        runScript = true
-    end
+local PhantomForcesWindow = Library:NewWindow("TDS")
+
+local KillingCheats = PhantomForcesWindow:NewSection("Auto skip")
+
+KillingCheats:CreateToggle("Auto Skip", function(value)
+    local args = {
+    [1] = "Voting",
+    [2] = "Skip"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
+    print(value)
 end)
-
-while true do
-    if runScript then
-        local args = {
-            [1] = "Voting",
-            [2] = "Skip"
-        }
-
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-    end
-    wait(0.1)
-end
