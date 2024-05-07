@@ -2,14 +2,20 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 
 local PhantomForcesWindow = Library:NewWindow("TDS")
 
-local Autoskip = PhantomForcesWindow:NewSection("Auto skip")
+local Autoskip = PhantomForcesWindow:NewSection("Auto Skip")
+
+local autoSkipEnabled = false
 
 Autoskip:CreateToggle("Auto Skip", function(value)
-    local args = {
-    [1] = "Voting",
-    [2] = "Skip"
-}
+    _G.autoskip = value
+end)
 
-game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
-    print(value)
+game:GetService("RunService").Stepped:Connect(function()
+    if _G.autoskip then
+        local args = {
+            [1] = "Voting",
+            [2] = "Skip"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
+    end
 end)
