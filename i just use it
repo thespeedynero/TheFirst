@@ -1,0 +1,115 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+
+local PhantomForcesWindow = Library:NewWindow("AIM")
+
+local Aimhelper = PhantomForcesWindow:NewSection("Aimhelp")
+
+local aimHelperConnection -- Variable to hold the RenderStepped connection
+
+Aimhelper:CreateToggle("Auto Aim", function(value)
+    local camera = game.Workspace.CurrentCamera
+    local player = game.Players.LocalPlayer
+
+    local function findNearestPlayer()
+        local nearestPlayer = nil
+        local shortestDistance = math.huge
+        local localPlayerCharacter = player.Character
+        if not localPlayerCharacter then return nil end
+
+        local humanoidRootPart = localPlayerCharacter:FindFirstChild("HumanoidRootPart")
+        if not humanoidRootPart then return nil end
+
+        for _, targetPlayer in ipairs(game.Players:GetPlayers()) do
+            if targetPlayer ~= player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local targetHumanoidRootPart = targetPlayer.Character.HumanoidRootPart
+                local distance = (humanoidRootPart.Position - targetHumanoidRootPart.Position).magnitude
+                if distance < shortestDistance then
+                    shortestDistance = distance
+                    nearestPlayer = targetPlayer
+                end
+            end
+        end
+
+        return nearestPlayer
+    end
+
+    local function aimAtNearestPlayer()
+        local nearestPlayer = findNearestPlayer()
+        if nearestPlayer then
+            local targetCharacter = nearestPlayer.Character
+            local targetHumanoidRootPart = targetCharacter:WaitForChild("HumanoidRootPart")
+            local lookAtPosition = targetHumanoidRootPart.Position + Vector3.new(0, 1.5, 0) -- Aim at the center of the player's torso
+            camera.CFrame = CFrame.new(camera.CFrame.Position, lookAtPosition)
+        end
+    end
+
+    if value then
+        aimHelperConnection = game:GetService("RunService").RenderStepped:Connect(aimAtNearestPlayer)
+    else
+        if aimHelperConnection then
+            aimHelperConnection:Disconnect()
+            aimHelperConnection = nil
+        end
+    end
+end)
+
+Aimhelper:CreateButton("Stop", function()
+    if aimHelperConnection then
+        aimHelperConnection:Disconnect()
+        aimHelperConnection = nil
+    end
+end)
+
+Aimhelper:CreateToggle("Dodge troll", function(value)
+local localPlayer = game.Players.LocalPlayer
+local function TeleportAroundPlayer(targetPlayer)
+    local targetCharacter = targetPlayer.Character
+    if not targetCharacter then return end
+    
+    local targetPosition = targetCharacter.PrimaryPart.Position
+    
+    
+    local starPoints = {
+        Vector3.new(30, 0, 0),
+        Vector3.new(-30, 0, 0),
+        Vector3.new(0, 0, 30),
+        Vector3.new(0, 0, -30),
+        Vector3.new(21, 0, 21)
+    }
+    
+    for _, offset in ipairs(starPoints) do
+        local newPosition = targetPosition + offset
+        localPlayer.Character:SetPrimaryPartCFrame(CFrame.new(newPosition))
+        wait(0.1)
+    end
+end
+
+
+local function FindNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character.PrimaryPart then
+            local distance = (localPlayer.Character.PrimaryPart.Position - player.Character.PrimaryPart.Position).Magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    
+    return nearestPlayer, shortestDistance
+end
+
+
+local function CheckDistanceAndTeleport()
+    local nearestPlayer, distance = FindNearestPlayer()
+    if nearestPlayer and distance <= 30 then
+        TeleportAroundPlayer(nearestPlayer)
+    end
+end
+
+
+CheckDistanceAndTeleport()
+end)
