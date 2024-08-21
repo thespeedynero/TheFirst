@@ -1,0 +1,84 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+
+local PhantomForcesWindow = Library:NewWindow("Combat")
+
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
+
+KillingCheats:CreateButton("Item to spawn dio", function()
+    local Players = game:GetService("Players")
+    local function onCharacterAdded(character)
+        local hasGivenTool = false
+        local mouse = game.Players.LocalPlayer:GetMouse()
+        
+        if not hasGivenTool then
+            local tool = Instance.new("Tool")
+            tool.RequiresHandle = false
+            tool.Name = "Spawn Boss Altar (DIO)"
+            tool.Activated:Connect(function()
+                local args = {
+                    [1] = "Spawn Boss Altar",
+                    [2] = "Dio",
+                    [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
+            end)
+            tool.Parent = game.Players.LocalPlayer.Backpack
+            hasGivenTool = true
+        end
+    end
+    
+    game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
+    
+    if game.Players.LocalPlayer.Character then
+        onCharacterAdded(game.Players.LocalPlayer.Character)
+    end
+end)
+
+KillingCheats:CreateButton("Oneshot", function()
+    getgenv().AutoOneShotting = true
+
+    task.spawn(function()
+        local connection
+        connection = game:GetService("RunService").RenderStepped:Connect(function()
+            if getgenv().AutoOneShotting then
+                pcall(function()
+                    for _, k in ipairs(workspace.Living:GetChildren()) do
+                        if k:IsA("Model") and k:FindFirstChild("Head") and k.Head:IsA("Part") and k.Head.Name == "Head" and k.Head ~= game.Players.LocalPlayer.Character.Head then
+                            if (k.Head.Position - game.Players.LocalPlayer.Character.Head.Position).magnitude <= 35 then
+                                if k:FindFirstChildOfClass("Humanoid").Health ~= k:FindFirstChildOfClass("Humanoid").MaxHealth then
+                                    k:FindFirstChildOfClass("Humanoid").Health = 0
+                                end
+                            end
+                        end
+                    end
+                end)
+            else
+                connection:Disconnect()
+            end
+        end)
+    end)
+end)
+
+KillingCheats:CreateButton("Auto ascension", function()
+    getgenv().AutoAscending = true
+
+    task.spawn(function()
+        while getgenv().AutoAscending do
+            pcall(function()
+                if game:GetService("Players").LocalPlayer:WaitForChild("Data"):WaitForChild("Ability"):GetAttribute("AbilityLevel") == 200 then
+                    local args = {[1] = game:GetService("Players").LocalPlayer:WaitForChild("Data"):WaitForChild("Ability").Value}
+                    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("LevelService"):WaitForChild("RF"):WaitForChild("AscendAbility"):InvokeServer(unpack(args))
+                end
+            end)
+            task.wait(0.35)
+        end
+    end)
+end)
+
+KillingCheats:CreateToggle("Teleport", function(value)
+if value then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
+else
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
+end
+end)
