@@ -3,11 +3,11 @@ local PhantomForcesWindow = Library:NewWindow("Only Dio")
 local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
 KillingCheats:CreateButton("Dio farm (ON)", function()
-    local enabledString = "True"
-    local enabled = enabledString == "True"
+    local enabledString = "trur"
+    local enabled = enabledString == "true"
 
     if enabled then
-        wait(5)
+        wait(4)
 
         local args = {
             [1] = "Spawn Boss Altar",
@@ -76,13 +76,12 @@ KillingCheats:CreateToggle("Teleport", function(value)
     if value then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
     else
-        -- Позиция по умолчанию или можно оставить пустым
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
     end
 end)
 
 KillingCheats:CreateButton("Dio farm turn (OFF)", function()
-    local enabledString = "False"
+    local enabledString = "false"
     local enabled = enabledString == "False"
 
     if enabled then
