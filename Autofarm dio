@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-local PhantomForcesWindow = Library:NewWindow("Only Dio")
+local PhantomForcesWindow = Library:NewWindow("Combat")
 local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
 local isFarmingActive = false
@@ -14,7 +14,7 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
             [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
-        
+
         task.spawn(function()
             local attackArgs = { [1] = "MouseButton1" }
             game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
@@ -39,7 +39,6 @@ KillingCheats:CreateButton("Dio farm (OFF)", function()
     isFarmingActive = false
     print("Dio farming stopped.")
 end)
-
 
 KillingCheats:CreateButton("Oneshot", function()
     getgenv().AutoOneShotting = true
@@ -82,36 +81,24 @@ KillingCheats:CreateButton("Auto ascension", function()
     end)
 end)
 
-KillingCheats:CreateToggle("Teleport", function(value)
-    if value then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
-    else
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
-    end
+KillingCheats:CreateButton("Teleport", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
 end)
 
-KillingCheats:CreateButton("Dio farm turn (OFF)", function()
-    local enabledString = "false"
-    KillingCheats:CreateButton("Dio farm (OFF)", function()
-    isFarmingActive = false
-    print("Dio farming stopped.")
-end)
 KillingCheats:CreateButton("Auto zoro quest", function()
-getgenv().AutoCompleteZoroQuest = true;
-    
-task.spawn(function()
-    while getgenv().AutoCompleteZoroQuest == true do
-        pcall(function()
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer();
-            local args = {[1] = "Zoros_Swords_Adventure"};
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args));
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer();
-            local args = {[1] = "Zoros_Swords_Adventure"};
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args));
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer();
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer();
-        end)
-        task.wait(0.015);
-    end
-end)
+    getgenv().AutoCompleteZoroQuest = true
+
+    task.spawn(function()
+        while getgenv().AutoCompleteZoroQuest do
+            pcall(function()
+                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer()
+                local args = {[1] = "Zoros_Swords_Adventure"}
+                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
+                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer()
+                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
+                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("AdventureService"):WaitForChild("RF"):WaitForChild("PickedUpSword"):InvokeServer()
+            end)
+            task.wait(0.015)
+        end
+    end)
 end)
