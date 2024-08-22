@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-local PhantomForcesWindow = Library:NewWindow("Combat")
+local PhantomForcesWindow = Library:NewWindow("ya zaebalsya")
 local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
 local isFarmingActive = false
