@@ -8,7 +8,7 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
     isFarmingActive = true
 
     local function spawnBoss()
-        task.wait(6)
+        task.wait(8)
 
         local args = {
             [1] = "Spawn Boss Altar",
