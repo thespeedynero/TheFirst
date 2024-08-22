@@ -102,3 +102,22 @@ KillingCheats:CreateButton("Auto zoro quest", function()
         end
     end)
 end)
+KillingCheats:CreateButton("No blood from dio", function()
+    getgenv().AutoFarmDioBoss = true
+
+    task.spawn(function()
+        while getgenv().AutoFarmDioBoss do
+            pcall(function()
+                local effects = workspace.Effects:GetChildren()
+                for i = #effects, 1, -1 do
+                    local v = effects[i]
+                    if v.Name == "Hold up, aint you Dio?" or v.Name == "FIRE" or v.Name == 'blood' then
+                        v:Destroy()
+                    end
+                end
+            end)
+            
+            task.wait(0.1)
+        end
+    end)
+end)
