@@ -3,7 +3,7 @@ local PhantomForcesWindow = Library:NewWindow("Only Dio")
 local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
 KillingCheats:CreateButton("Dio farm (ON)", function()
-    local enabledString = "trur"
+    local enabledString = "true"
     local enabled = enabledString == "true"
 
     if enabled then
