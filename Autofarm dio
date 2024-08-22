@@ -17,11 +17,10 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
 
-        task.spawn(function()
-            local attackArgs = { [1] = "MouseButton1" }
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-        end)
 
+        local attackArgs = { [1] = "MouseButton1" }
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        
         task.spawn(function()
             task.wait(0.4)
             local attackArgs = { [1] = "MouseButton1" }
