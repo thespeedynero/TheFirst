@@ -1,56 +1,35 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-
 local PhantomForcesWindow = Library:NewWindow("Only Dio")
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
 KillingCheats:CreateButton("Dio farm (ON)", function()
     local enabledString = "True"
     local enabled = enabledString == "True"
 
     if enabled then
-        local Players = game:GetService("Players")
-        local function onCharacterAdded(character)
-            local hasGivenTool = false
+        wait(5)
 
-            if not hasGivenTool then
-                local tool = Instance.new("Tool")
-                tool.RequiresHandle = false
-                tool.Name = "Spawn Boss Altar (DIO)"
-                tool.Activated:Connect(function()
-                    wait(5)
+        local args = {
+            [1] = "Spawn Boss Altar",
+            [2] = "Dio",
+            [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
 
-                    local args = {
-                        [1] = "Spawn Boss Altar",
-                        [2] = "Dio",
-                        [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
-                    }
-                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
+        task.spawn(function()
+            local attackArgs = { [1] = "MouseButton1" }
+            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        end)
 
-                    task.spawn(function()
-                        local attackArgs = { [1] = "MouseButton1" }
-                        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-                    end)
-
-                    task.spawn(function()
-                        wait(0.4)
-                        local attackArgs = { [1] = "MouseButton1" }
-                        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-                    end)
-                end)
-                tool.Parent = game.Players.LocalPlayer.Backpack
-                hasGivenTool = true
-            end
-        end
-
-        game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterAdded)
-
-        if game.Players.LocalPlayer.Character then
-            onCharacterAdded(game.Players.LocalPlayer.Character)
-        end
+        task.spawn(function()
+            wait(0.4)
+            local attackArgs = { [1] = "MouseButton1" }
+            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        end)
     else
         print("Signal")
     end
 end)
-
 
 KillingCheats:CreateButton("Oneshot", function()
     getgenv().AutoOneShotting = true
@@ -97,31 +76,34 @@ KillingCheats:CreateToggle("Teleport", function(value)
     if value then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
     else
+        -- Позиция по умолчанию или можно оставить пустым
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(19085.412109375, 910.5474853515625, 117.22322082519531)
     end
 end)
 
 KillingCheats:CreateButton("Dio farm turn (OFF)", function()
-local enabledString = "False" 
+    local enabledString = "False"
+    local enabled = enabledString == "False"
 
-local enabled = enabledString == "False"
+    if enabled then
+        local args = {
+            [1] = "Spawn Boss Altar",
+            [2] = "Dio",
+            [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
 
-if enabled then
-    local args = { [1] = "Spawn Boss Altar", [2] = "Dio", [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part") }
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
+        task.spawn(function()
+            local attackArgs = { [1] = "MouseButton1" }
+            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        end)
 
-    task.spawn(function()
-        local attackArgs = { [1] = "MouseButton1" }
-        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-    end)
-
-    task.spawn(function()
-        wait(0.4)
-        local attackArgs = { [1] = "MouseButton1" }
-        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-    end)
-else
-    print("ama big dog big bear")
-end
-
+        task.spawn(function()
+            wait(0.4)
+            local attackArgs = { [1] = "MouseButton1" }
+            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        end)
+    else
+        print("ama big dog big bear")
+    end
 end)
