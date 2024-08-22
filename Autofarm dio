@@ -7,8 +7,7 @@ local isFarmingActive = false
 KillingCheats:CreateButton("Dio farm (ON)", function()
     isFarmingActive = true
 
-    local function spawnBoss()
-        task.wait(8)
+        wait(8)
 
         local args = {
             [1] = "Spawn Boss Altar",
@@ -27,10 +26,6 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
             game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
         end)
     end
-
-    task.spawn(function()
-        while isFarmingActive do
-            spawnBoss()
         end
     end)
 end)
