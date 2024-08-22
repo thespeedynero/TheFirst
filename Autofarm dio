@@ -32,7 +32,6 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
     task.spawn(function()
         while isFarmingActive do
             spawnBoss()
-            task.wait(4)
         end
     end)
 end)
