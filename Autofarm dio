@@ -102,7 +102,7 @@ end)
 KillingCheats:CreateButton("Dio farm turn (OFF)", function()
 local enabledString = "False" 
 
-local enabled = enabledString == "True"
+local enabled = enabledString == "False"
 
 if enabled then
     local args = { [1] = "Spawn Boss Altar", [2] = "Dio", [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part") }
