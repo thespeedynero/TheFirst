@@ -2,20 +2,19 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 local PhantomForcesWindow = Library:NewWindow("Only Dio")
 local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
+local isFarmingActive = false
+
 KillingCheats:CreateButton("Dio farm (ON)", function()
-    local enabledString = "true"
-    local enabled = enabledString == "true"
+    isFarmingActive = true
 
-    if enabled then
-        wait(4)
-
+    local function spawnBoss()
         local args = {
             [1] = "Spawn Boss Altar",
             [2] = "Dio",
             [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
-
+        
         task.spawn(function()
             local attackArgs = { [1] = "MouseButton1" }
             game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
@@ -26,10 +25,21 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
             local attackArgs = { [1] = "MouseButton1" }
             game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
         end)
-    else
-        print("Signal")
     end
+
+    task.spawn(function()
+        while isFarmingActive do
+            spawnBoss()
+            wait(4)
+        end
+    end)
 end)
+
+KillingCheats:CreateButton("Dio farm (OFF)", function()
+    isFarmingActive = false
+    print("Dio farming stopped.")
+end)
+
 
 KillingCheats:CreateButton("Oneshot", function()
     getgenv().AutoOneShotting = true
@@ -82,29 +92,9 @@ end)
 
 KillingCheats:CreateButton("Dio farm turn (OFF)", function()
     local enabledString = "false"
-    local enabled = enabledString == "False"
-
-    if enabled then
-        local args = {
-            [1] = "Spawn Boss Altar",
-            [2] = "Dio",
-            [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
-        }
-        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
-
-        task.spawn(function()
-            local attackArgs = { [1] = "MouseButton1" }
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-        end)
-
-        task.spawn(function()
-            wait(0.4)
-            local attackArgs = { [1] = "MouseButton1" }
-            game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-        end)
-    else
-        print("ama big dog big bear")
-    end
+    KillingCheats:CreateButton("Dio farm (OFF)", function()
+    isFarmingActive = false
+    print("Dio farming stopped.")
 end)
 KillingCheats:CreateButton("Auto zoro quest", function()
 getgenv().AutoCompleteZoroQuest = true;
