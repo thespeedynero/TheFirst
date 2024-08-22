@@ -7,26 +7,30 @@ local isFarmingActive = false
 KillingCheats:CreateButton("Dio farm (ON)", function()
     isFarmingActive = true
 
-    task.spawn(function()
-        while isFarmingActive do
-            wait(8)
+    local function spawnBoss()
+        task.wait(8)
 
-            local args = {
-                [1] = "Spawn Boss Altar",
-                [2] = "Dio",
-                [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
+        local args = {
+            [1] = "Spawn Boss Altar",
+            [2] = "Dio",
+            [3] = workspace:WaitForChild("NPCSpawns"):WaitForChild("Boss Altar"):WaitForChild("Spawn"):WaitForChild("Part")
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("NpcFunc"):InvokeServer(unpack(args))
 
+
+        local attackArgs = { [1] = "MouseButton1" }
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+
+        task.spawn(function()
+            task.wait(0.4)
             local attackArgs = { [1] = "MouseButton1" }
             game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
+        end)
+    end
 
-            task.spawn(function()
-                task.wait(0.4)
-                local attackArgs = { [1] = "MouseButton1" }
-                game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(attackArgs))
-            end)
-            -- task.wait(3)
+    task.spawn(function()
+        while isFarmingActive do
+            spawnBoss()
         end
     end)
 end)
@@ -98,7 +102,6 @@ KillingCheats:CreateButton("Auto zoro quest", function()
         end
     end)
 end)
-
 KillingCheats:CreateButton("No blood from dio", function()
     getgenv().AutoFarmDioBoss = true
 
@@ -113,7 +116,7 @@ KillingCheats:CreateButton("No blood from dio", function()
                     end
                 end
             end)
-            
+
             task.wait(0.1)
         end
     end)
