@@ -2,7 +2,6 @@ local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/blood
 
 local PhantomForcesWindow = Library:NewWindow("Only Dio")
 
-local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 KillingCheats:CreateButton("Dio farm (ON)", function()
     local enabledString = "True"
     local enabled = enabledString == "True"
@@ -17,6 +16,8 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
                 tool.RequiresHandle = false
                 tool.Name = "Spawn Boss Altar (DIO)"
                 tool.Activated:Connect(function()
+                    wait(5)
+
                     local args = {
                         [1] = "Spawn Boss Altar",
                         [2] = "Dio",
@@ -49,6 +50,7 @@ KillingCheats:CreateButton("Dio farm (ON)", function()
         print("Signal")
     end
 end)
+
 
 KillingCheats:CreateButton("Oneshot", function()
     getgenv().AutoOneShotting = true
