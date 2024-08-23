@@ -129,5 +129,32 @@ wait(0.4)
 end)
 
 KillingCheats:CreateButton("Button", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
+local teleportPosition = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
+
+local function checkForEntities()
+    local players = game:GetService("Players")
+    local livings = game.Workspace:FindFirstChild("Livings")
+    local entitiesFound = false
+
+    if livings then
+        for _, entity in pairs(livings:GetChildren()) do
+            if entity:IsA("Model") and (entity.Name == "The Bearer" or entity.Name == "Jujutsu Sorcerer") then
+                entitiesFound = true
+                break
+            end
+        end
+    end
+
+    if not entitiesFound then
+        local player = players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = teleportPosition
+        end
+    end
+end
+
+while true do
+    checkForEntities()
+    wait(3)
+end
 end)
