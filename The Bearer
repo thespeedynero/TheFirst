@@ -128,7 +128,7 @@ end
 wait(0.4)
 end)
 
-KillingCheats:CreateButton("Button", function()
+KillingCheats:CreateButton("No break TP", function()
 local teleportPosition = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
 
 local function checkForEntities()
@@ -157,4 +157,61 @@ while true do
     checkForEntities()
     wait(3)
 end
+end)
+
+KillingCheats:CreateButton("over x atom", function()
+local player = game.Players.LocalPlayer
+local playerGui = player.PlayerGui
+local meter = playerGui.UI.Gameplay.Character.Meter
+local textObject = meter.Text
+
+local RunService = game:GetService("RunService")
+
+local function runSecondScript()
+    local attackArgsH = { [1] = "H" }
+    game:GetService("ReplicatedStorage")
+        :WaitForChild("ReplicatedModules")
+        :WaitForChild("KnitPackage")
+        :WaitForChild("Knit")
+        :WaitForChild("Services")
+        :WaitForChild("MoveInputService")
+        :WaitForChild("RF")
+        :WaitForChild("FireInput")
+        :InvokeServer(unpack(attackArgsH))
+end
+
+local function runThirdScript()
+    local attackArgsZ = { [1] = "Z" }
+    game:GetService("ReplicatedStorage")
+        :WaitForChild("ReplicatedModules")
+        :WaitForChild("KnitPackage")
+        :WaitForChild("Knit")
+        :WaitForChild("Services")
+        :WaitForChild("MoveInputService")
+        :WaitForChild("RF")
+        :WaitForChild("FireInput")
+        :InvokeServer(unpack(attackArgsZ))
+end
+
+local function checkValue()
+    RunService.Heartbeat:Connect(function()
+        if textObject and textObject:IsA("TextLabel") then
+            local meterValue = textObject.Text
+            
+            if meterValue == "100" then
+                local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+                
+                wait(0.1)
+                runSecondScript()
+
+                wait(0.1)
+                runThirdScript()
+            end
+        end
+    end)
+end
+
+checkValue()
+
 end)
