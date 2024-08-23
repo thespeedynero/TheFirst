@@ -200,3 +200,45 @@ function sendKeyPress(key)
         :InvokeServer(unpack(attackArgs))
 end
 end)
+KillingCheats:CreateButton("Button", function()
+while true do
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local targetItemName = "Sukuna's Finger"
+
+local function equipTool()
+    local backpack = player.Backpack
+    local tools = backpack:GetChildren()
+
+    for _, tool in ipairs(tools) do
+        if tool.Name == targetItemName then
+            tool.Parent = character
+
+            if tool:FindFirstChild("Handle") then
+                tool.Handle.Anchored = false
+                tool.Parent = character:FindFirstChildOfClass("Humanoid")
+                tool:Activate()
+                return true
+            end
+        end
+    end
+    return false
+end
+
+character:WaitForChild("Humanoid")
+local equipped = equipTool()
+
+if equipped then
+    local args = {
+        [1] = {
+            ["AddItems"] = true
+        }
+    }
+
+    local inventoryService = game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RE"):WaitForChild("ItemInventory")
+    inventoryService:FireServer(unpack(args))
+end
+
+wait(1)
+end
+end)
