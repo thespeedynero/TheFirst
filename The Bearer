@@ -165,10 +165,8 @@ local playerGui = player.PlayerGui
 local meter = playerGui.UI.Gameplay.Character.Meter
 local textObject = meter.Text
 
-local RunService = game:GetService("RunService")
-
-local function runSecondScript()
-    local attackArgsH = { [1] = "H" }
+local function sendKeyPress(key)
+    local attackArgs = { [1] = key }
     game:GetService("ReplicatedStorage")
         :WaitForChild("ReplicatedModules")
         :WaitForChild("KnitPackage")
@@ -177,24 +175,11 @@ local function runSecondScript()
         :WaitForChild("MoveInputService")
         :WaitForChild("RF")
         :WaitForChild("FireInput")
-        :InvokeServer(unpack(attackArgsH))
-end
-
-local function runThirdScript()
-    local attackArgsZ = { [1] = "Z" }
-    game:GetService("ReplicatedStorage")
-        :WaitForChild("ReplicatedModules")
-        :WaitForChild("KnitPackage")
-        :WaitForChild("Knit")
-        :WaitForChild("Services")
-        :WaitForChild("MoveInputService")
-        :WaitForChild("RF")
-        :WaitForChild("FireInput")
-        :InvokeServer(unpack(attackArgsZ))
+        :InvokeServer(unpack(attackArgs))
 end
 
 local function checkValue()
-    RunService.Heartbeat:Connect(function()
+    while true do
         if textObject and textObject:IsA("TextLabel") then
             local meterValue = textObject.Text
             
@@ -203,15 +188,17 @@ local function checkValue()
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
                 
                 wait(0.1)
-                runSecondScript()
+                sendKeyPress("H")
 
                 wait(0.1)
-                runThirdScript()
+                sendKeyPress("Z")
             end
         end
-    end)
+        wait(0.1)
+    end
 end
 
 checkValue()
+
 
 end)
