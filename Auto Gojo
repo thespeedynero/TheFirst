@@ -184,22 +184,43 @@ KillingCheats:CreateButton("Auto Store finger", function()
 end)
 
 KillingCheats:CreateButton("SKILLS", function()
-    local function pressSkillButton(key)
-        local attackArgs = { [1] = key }
-        local remoteFunction = game:GetService("ReplicatedStorage")
-            :WaitForChild("ReplicatedModules")
-            :WaitForChild("KnitPackage")
-            :WaitForChild("Knit")
-            :WaitForChild("Services")
-            :WaitForChild("MoveInputService")
-            :WaitForChild("RF")
-            :WaitForChild("FireInput")
-        remoteFunction:InvokeServer(unpack(attackArgs))
-    end
+function isOnlyHonoredOneInRadius(honoredOne, radius)
+    local honoredOnePosition = honoredOne.Position
+    local livingFolder = game.Workspace:WaitForChild("Living")
 
-    while true do
-        pressSkillButton("R+")
+    for _, entity in pairs(livingFolder:GetChildren()) do
+        if entity ~= honoredOne and (entity:IsA("Model") or entity:IsA("Part")) then
+            local distance = (honoredOnePosition - entity.Position).magnitude
+            if distance <= radius then
+                return false
+            end
+        end
     end
+    return true
+end
+
+function pressSkillButton()
+    local key = "R+"
+    local attackArgs = { [1] = key }
+    local remoteFunction = game:GetService("ReplicatedStorage")
+        :WaitForChild("ReplicatedModules")
+        :WaitForChild("KnitPackage")
+        :WaitForChild("Knit")
+        :WaitForChild("Services")
+        :WaitForChild("MoveInputService")
+        :WaitForChild("RF")
+        :WaitForChild("FireInput")
+    remoteFunction:InvokeServer(unpack(attackArgs))
+end
+
+while true do
+    local honoredOne = game.Workspace.Living:FindFirstChild("The Honored One")
+    if honoredOne and isOnlyHonoredOneInRadius(honoredOne, 4) then
+        pressSkillButton()
+    end
+    wait(0.1)
+end
+
 end)
 
 KillingCheats:CreateButton("over x atom", function()
