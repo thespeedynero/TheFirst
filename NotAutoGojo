@@ -1,0 +1,110 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local PhantomForcesWindow = Library:NewWindow("NotAutoGojo")
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
+
+local killThemRunning = false
+
+KillingCheats:CreateButton("Start Kill Them", function()
+    killThemRunning = true
+    local player = game.Players.LocalPlayer
+    local playerGui = player.PlayerGui
+    local meter = playerGui.UI.Gameplay.Character.Meter
+    local textObject = meter.Text
+
+    local RunService = game:GetService("RunService")
+    local teleportDistance = 6
+
+    local function findNearestTarget()
+        local nearestDistance = math.huge
+        local nearestTarget = nil
+        local honoredOneFound = false
+
+        for _, obj in ipairs(workspace.Living:GetChildren()) do
+            if obj.Name:find("The Honored One") then
+                nearestTarget = obj
+                honoredOneFound = true
+                break
+            end
+        end
+
+        if not honoredOneFound then
+            for _, obj in ipairs(workspace.Living:GetChildren()) do
+                if obj.Name:find("Jujutsu Sorcerer") then
+                    local distance = (player.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude
+                    if distance < nearestDistance then
+                        nearestDistance = distance
+                        nearestTarget = obj
+                    end
+                end
+            end
+        end
+
+        return nearestTarget, honoredOneFound
+    end
+
+    local function runScript(attackKey)
+        local attackArgs = { [1] = attackKey }
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgs))
+    end
+
+    local function teleportToNearestTarget()
+        RunService.Heartbeat:Connect(function()
+            if not killThemRunning then return end
+
+            local nearestTarget, honoredOneFound = findNearestTarget()
+
+            if honoredOneFound then
+                teleportDistance = 6
+            else
+                teleportDistance = 6
+            end
+
+            if nearestTarget then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, teleportDistance, 0), nearestTarget.HumanoidRootPart.Position)
+            end
+            wait(0.1)
+        end)
+    end
+
+    local function checkValue()
+        teleportToNearestTarget()
+
+        RunService.Heartbeat:Connect(function()
+            if not killThemRunning then return end
+
+            if textObject and textObject:IsA("TextLabel") then
+                local meterValue = textObject.Text
+                local nearestTarget, honoredOneFound = findNearestTarget()
+
+                if nearestTarget and honoredOneFound then
+                    teleportToNearestTarget()
+                elseif meterValue == "100" then
+                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, teleportDistance, 0)
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+
+                    wait(0.1)
+                    teleportToNearestTarget()
+                    wait(1)
+                end
+            end
+        end)
+    end
+
+    checkValue()
+end)
+
+KillingCheats:CreateButton("Stop Kill Them", function()
+    killThemRunning = false
+end)
+
+KillingCheats:CreateButton("Teleport to Position", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
+end)
