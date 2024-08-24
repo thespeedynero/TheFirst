@@ -1,133 +1,132 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
-local PhantomForcesWindow = Library:NewWindow("The Bearer")
+local PhantomForcesWindow = Library:NewWindow("Combat")
 
-local KillingCheats = PhantomForcesWindow:NewSection("Main")
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
 
+-- Existing buttons
 KillingCheats:CreateButton("Auto Quest", function()
-while true do
-wait(1)
-local args = {
-    [1] = "Slayer_Quest",
-    [2] = "Finger Bearer"
-}
+    while true do
+        wait(1)
+        local args = {
+            [1] = "Slayer_Quest",
+            [2] = "Finger Bearer"
+        }
 
-game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
-end
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
+    end
 end)
 
-
 KillingCheats:CreateButton("Kill them", function()
-local player = game.Players.LocalPlayer
-local playerGui = player.PlayerGui
-local meter = playerGui.UI.Gameplay.Character.Meter
-local textObject = meter.Text
+    local player = game.Players.LocalPlayer
+    local playerGui = player.PlayerGui
+    local meter = playerGui.UI.Gameplay.Character.Meter
+    local textObject = meter.Text
 
-local RunService = game:GetService("RunService")
+    local RunService = game:GetService("RunService")
 
-local function findNearestTarget()
-    local nearestDistance = math.huge
-    local nearestTarget = nil
-    local bearerFound = false
+    local function findNearestTarget()
+        local nearestDistance = math.huge
+        local nearestTarget = nil
+        local bearerFound = false
 
-    for _, obj in ipairs(workspace.Living:GetChildren()) do
-        if obj.Name:find("The Bearer") then
-            nearestTarget = obj
-            bearerFound = true
-            break
-        end
-    end
-
-    if not bearerFound then
         for _, obj in ipairs(workspace.Living:GetChildren()) do
-            if obj.Name:find("Jujutsu Sorcerer") then
-                local distance = (player.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude
-                if distance < nearestDistance then
-                    nearestDistance = distance
-                    nearestTarget = obj
+            if obj.Name:find("The Bearer") then
+                nearestTarget = obj
+                bearerFound = true
+                break
+            end
+        end
+
+        if not bearerFound then
+            for _, obj in ipairs(workspace.Living:GetChildren()) do
+                if obj.Name:find("Jujutsu Sorcerer") then
+                    local distance = (player.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude
+                    if distance < nearestDistance then
+                        nearestDistance = distance
+                        nearestTarget = obj
+                    end
                 end
             end
         end
+
+        return nearestTarget
     end
 
-    return nearestTarget
-end
+    local function runSecondScript()
+        local attackArgsH = { [1] = "H" }
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgsH))
+    end
 
-local function runSecondScript()
-    local attackArgsH = { [1] = "H" }
-    game:GetService("ReplicatedStorage")
-        :WaitForChild("ReplicatedModules")
-        :WaitForChild("KnitPackage")
-        :WaitForChild("Knit")
-        :WaitForChild("Services")
-        :WaitForChild("MoveInputService")
-        :WaitForChild("RF")
-        :WaitForChild("FireInput")
-        :InvokeServer(unpack(attackArgsH))
-end
+    local function runThirdScript()
+        local attackArgsZ = { [1] = "Z" }
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgsZ))
+    end
 
-local function runThirdScript()
-    local attackArgsZ = { [1] = "Z" }
-    game:GetService("ReplicatedStorage")
-        :WaitForChild("ReplicatedModules")
-        :WaitForChild("KnitPackage")
-        :WaitForChild("Knit")
-        :WaitForChild("Services")
-        :WaitForChild("MoveInputService")
-        :WaitForChild("RF")
-        :WaitForChild("FireInput")
-        :InvokeServer(unpack(attackArgsZ))
-end
-
-local function teleportToNearestTarget()
-    RunService.Heartbeat:Connect(function()
-        local nearestTarget = findNearestTarget()
-        if nearestTarget then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, 0, 5), nearestTarget.HumanoidRootPart.Position)
-        end
-        wait(0.1)
-    end)
-end
-
-local function checkValue()
-    teleportToNearestTarget()
-
-    RunService.Heartbeat:Connect(function()
-        if textObject and textObject:IsA("TextLabel") then
-            local meterValue = textObject.Text
+    local function teleportToNearestTarget()
+        RunService.Heartbeat:Connect(function()
             local nearestTarget = findNearestTarget()
-
-            if nearestTarget and nearestTarget.Name:find("The Bearer") then
-                teleportToNearestTarget()
-            elseif meterValue == "100" then
-                local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
-
-                wait(0.1)
-                runSecondScript()
-
-                while textObject.Text == "100" do
-                    wait(0.07)
-                end
-
-                teleportToNearestTarget()
-                wait(1)
-                runThirdScript()
+            if nearestTarget then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, 2, 0), nearestTarget.HumanoidRootPart.Position)
             end
-        end
-    end)
-end
+            wait(0.1)
+        end)
+    end
 
-checkValue()
+    local function checkValue()
+        teleportToNearestTarget()
 
+        RunService.Heartbeat:Connect(function()
+            if textObject and textObject:IsA("TextLabel") then
+                local meterValue = textObject.Text
+                local nearestTarget = findNearestTarget()
+
+                if nearestTarget and nearestTarget.Name:find("The Bearer") then
+                    teleportToNearestTarget()
+                elseif meterValue == "100" then
+                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+
+                    wait(0.1)
+                    runSecondScript()
+
+                    while textObject.Text == "100" do
+                        wait(0.07)
+                    end
+
+                    teleportToNearestTarget()
+                    wait(1)
+                    runThirdScript()
+                end
+            end
+        end)
+    end
+
+    checkValue()
 end)
 
 KillingCheats:CreateButton("Auto M1", function()
-while true do
-    local args = { [1] = "MouseButton1" }
-    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(args))
-end
-wait(0.4)
+    while true do
+        local args = { [1] = "MouseButton1" }
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(args))
+        wait(0.4)
+    end
 end)
 
 KillingCheats:CreateButton("No break TP", function()
@@ -157,7 +156,6 @@ KillingCheats:CreateButton("No break TP", function()
     end
 end)
 
-
 KillingCheats:CreateButton("over x atom", function()
     while true do
         local player = game.Players.LocalPlayer
@@ -179,7 +177,7 @@ KillingCheats:CreateButton("over x atom", function()
                 sendKeyPress("Z")
             end
         else
-            warn("TextLabel не найден или это не TextLabel.")
+            warn("TextLabel not found fuck.")
         end
 
         wait(0.1)
@@ -189,57 +187,62 @@ end)
 function sendKeyPress(key)
     local attackArgs = { [1] = key }
     print("Sending key press: ", key)
-    game:GetService("ReplicatedStorage")
-        :WaitForChild("ReplicatedModules")
-        :WaitForChild("KnitPackage")
-        :WaitForChild("Knit")
-        :WaitForChild("Services")
-        :WaitForChild("MoveInputService")
-        :WaitForChild("RF")
-        :WaitForChild("FireInput")
-        :InvokeServer(unpack(attackArgs))
-end
-end)
-
-KillingCheats:CreateButton("Button", function()
-while true do
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local targetItemName = "Sukuna's Finger"
-
-local function equipTool()
-    local backpack = player.Backpack
-    local tools = backpack:GetChildren()
-
-    for _, tool in ipairs(tools) do
-        if tool.Name == targetItemName then
-            tool.Parent = character
-
-            if tool:FindFirstChild("Handle") then
-                tool.Handle.Anchored = false
-                tool.Parent = character:FindFirstChildOfClass("Humanoid")
-                tool:Activate()
-                return true
-            end
-        end
+    local success, result = pcall(function()
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgs))
+    end)
+    if not success then
+        warn("Failed to send key press: ", result)
     end
-    return false
 end
 
-character:WaitForChild("Humanoid")
-local equipped = equipTool()
+-- Add Items button
+KillingCheats:CreateButton("Add Items", function()
+    while true do
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local targetItemName = "Sukuna's Finger"
 
-if equipped then
-    local args = {
-        [1] = {
-            ["AddItems"] = true
-        }
-    }
+        local function equipTool()
+            local backpack = player.Backpack
+            local tools = backpack:GetChildren()
 
-    local inventoryService = game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RE"):WaitForChild("ItemInventory")
-    inventoryService:FireServer(unpack(args))
-end
+            for _, tool in ipairs(tools) do
+                if tool.Name == targetItemName then
+                    tool.Parent = character
 
-wait(1)
-end
+                    if tool:FindFirstChild("Handle") then
+                        tool.Handle.Anchored = false
+                        tool.Parent = character:FindFirstChildOfClass("Humanoid")
+                        tool:Activate()
+                        return true
+                    end
+                end
+            end
+            return false
+        end
+
+        character:WaitForChild("Humanoid")
+        local equipped = equipTool()
+
+        if equipped then
+            local args = {
+                [1] = {
+                    ["AddItems"] = true
+                }
+            }
+
+            local inventoryService = game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RE"):WaitForChild("ItemInventory")
+            inventoryService:FireServer(unpack(args))
+        end
+
+        wait(1)
+    end
 end)
