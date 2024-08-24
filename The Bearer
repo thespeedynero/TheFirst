@@ -203,7 +203,6 @@ function sendKeyPress(key)
     end
 end
 
--- Add Items button
 KillingCheats:CreateButton("Add Items", function()
     while true do
         local player = game.Players.LocalPlayer
