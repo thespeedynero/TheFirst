@@ -83,7 +83,7 @@ KillingCheats:CreateButton("Kill them", function()
         RunService.Heartbeat:Connect(function()
             local nearestTarget = findNearestTarget()
             if nearestTarget then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, 5, 0), nearestTarget.HumanoidRootPart.Position)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, 8, 0), nearestTarget.HumanoidRootPart.Position)
             end
             wait(0.1)
         end)
@@ -100,7 +100,7 @@ KillingCheats:CreateButton("Kill them", function()
                 if nearestTarget and nearestTarget.Name:find("The Bearer") then
                     teleportToNearestTarget()
                 elseif meterValue == "100" then
-                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 3, 0)
+                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 8, 0)
                     player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
 
                     wait(0.1)
