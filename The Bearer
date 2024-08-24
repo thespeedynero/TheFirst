@@ -200,6 +200,7 @@ function sendKeyPress(key)
         :InvokeServer(unpack(attackArgs))
 end
 end)
+
 KillingCheats:CreateButton("Button", function()
 while true do
 local player = game.Players.LocalPlayer
