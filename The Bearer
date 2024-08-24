@@ -100,7 +100,7 @@ KillingCheats:CreateButton("Kill them", function()
                 if nearestTarget and nearestTarget.Name:find("The Bearer") then
                     teleportToNearestTarget()
                 elseif meterValue == "100" then
-                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 8, 0)
+                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 7, 0)
                     player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
 
                     wait(0.1)
