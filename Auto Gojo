@@ -1,0 +1,259 @@
+local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local PhantomForcesWindow = Library:NewWindow("Combat")
+local KillingCheats = PhantomForcesWindow:NewSection("Kill Options")
+
+KillingCheats:CreateButton("Auto Quest", function()
+while true do
+    local args = {
+        [1] = "Slayer_Quest",
+        [2] = "Gojo"
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
+    wait(1)
+end
+end)
+
+KillingCheats:CreateButton("Kill them", function()
+    local player = game.Players.LocalPlayer
+    local playerGui = player.PlayerGui
+    local meter = playerGui.UI.Gameplay.Character.Meter
+    local textObject = meter.Text
+
+    local RunService = game:GetService("RunService")
+    local teleportDistance = 6
+
+    local function findNearestTarget()
+        local nearestDistance = math.huge
+        local nearestTarget = nil
+        local honoredOneFound = false
+
+        for _, obj in ipairs(workspace.Living:GetChildren()) do
+            if obj.Name:find("The Honored One") then
+                nearestTarget = obj
+                honoredOneFound = true
+                break
+            end
+        end
+
+        if not honoredOneFound then
+            for _, obj in ipairs(workspace.Living:GetChildren()) do
+                if obj.Name:find("Jujutsu Sorcerer") then
+                    local distance = (player.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude
+                    if distance < nearestDistance then
+                        nearestDistance = distance
+                        nearestTarget = obj
+                    end
+                end
+            end
+        end
+
+        return nearestTarget, honoredOneFound
+    end
+
+    local function runScript(attackKey)
+        local attackArgs = { [1] = attackKey }
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgs))
+    end
+
+    local function teleportToNearestTarget()
+        RunService.Heartbeat:Connect(function()
+            local nearestTarget, honoredOneFound = findNearestTarget()
+            
+            if honoredOneFound then
+                teleportDistance = 6
+            else
+                teleportDistance = 6
+            end
+
+            if nearestTarget then
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, teleportDistance, 0), nearestTarget.HumanoidRootPart.Position)
+            end
+            wait(0.1)
+        end)
+    end
+
+    local function checkValue()
+        teleportToNearestTarget()
+
+        RunService.Heartbeat:Connect(function()
+            if textObject and textObject:IsA("TextLabel") then
+                local meterValue = textObject.Text
+                local nearestTarget, honoredOneFound = findNearestTarget()
+
+                if nearestTarget and honoredOneFound then
+                    teleportToNearestTarget()
+                elseif meterValue == "100" then
+                    local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, teleportDistance, 0)
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+
+                    wait(0.1)
+                    runScript("H")
+
+                    while textObject.Text == "100" do
+                        wait(0.07)
+                    end
+
+                    teleportToNearestTarget()
+                    wait(1)
+                    runScript("Z")
+                end
+            end
+        end)
+    end
+
+    checkValue()
+end)
+
+KillingCheats:CreateButton("No break TP", function()
+    local teleportPosition = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
+
+    local function checkForEntities()
+        local livings = game.Workspace:FindFirstChild("Livings")
+        local entitiesFound = false
+
+        if livings then
+            if livings:FindFirstChild("The Honored One") or livings:FindFirstChild("Jujutsu Sorcerer") then
+                entitiesFound = true
+            end
+        end
+
+        if not entitiesFound then
+            local player = game.Players.LocalPlayer
+            if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = teleportPosition
+            end
+        end
+    end
+
+    while true do
+        checkForEntities()
+        wait(3)
+    end
+end)
+
+KillingCheats:CreateButton("Auto Store finger", function()
+    while true do
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local targetItemName = "Sukuna's Finger"
+
+        local function equipTool()
+            local backpack = player.Backpack
+            local tools = backpack:GetChildren()
+
+            for _, tool in ipairs(tools) do
+                if tool.Name == targetItemName then
+                    tool.Parent = character
+
+                    if tool:FindFirstChild("Handle") then
+                        tool.Handle.Anchored = false
+                        tool.Parent = character:FindFirstChildOfClass("Humanoid")
+                        tool:Activate()
+                        return true
+                    end
+                end
+            end
+            return false
+        end
+
+        character:WaitForChild("Humanoid")
+        local equipped = equipTool()
+
+        if equipped then
+            local args = {
+                [1] = {
+                    ["AddItems"] = true
+                }
+            }
+
+            local inventoryService = game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("InventoryService"):WaitForChild("RE"):WaitForChild("ItemInventory")
+            inventoryService:FireServer(unpack(args))
+        end
+
+        wait(1)
+    end
+end)
+
+KillingCheats:CreateButton("SKILLS", function()
+    local function pressSkillButton(key)
+        local attackArgs = { [1] = key }
+        local remoteFunction = game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+        remoteFunction:InvokeServer(unpack(attackArgs))
+    end
+
+    while true do
+        pressSkillButton("R+")
+    end
+end)
+
+KillingCheats:CreateButton("over x atom", function()
+    while true do
+        local player = game.Players.LocalPlayer
+        local playerGui = player.PlayerGui
+        local textObject = playerGui.UI.Gameplay.Character.Meter.Text.Value
+
+        if textObject and textObject:IsA("TextLabel") then
+            local meterValue = textObject.Text
+            print("Current Meter value: ", meterValue)
+
+            if meterValue == "100" then
+                local newPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 6, 0)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(newPosition)
+
+                wait(0.1)
+                sendKeyPress("H")
+
+                wait(0.1)
+                sendKeyPress("Z")
+            end
+        else
+            warn("TextLabel not found fuck.")
+        end
+
+        wait(0.1)
+    end
+end)
+
+function sendKeyPress(key)
+    local attackArgs = { [1] = key }
+    print("Sending key press: ", key)
+    local success, result = pcall(function()
+        game:GetService("ReplicatedStorage")
+            :WaitForChild("ReplicatedModules")
+            :WaitForChild("KnitPackage")
+            :WaitForChild("Knit")
+            :WaitForChild("Services")
+            :WaitForChild("MoveInputService")
+            :WaitForChild("RF")
+            :WaitForChild("FireInput")
+            :InvokeServer(unpack(attackArgs))
+    end)
+    if not success then
+        warn("Failed to send key press: ", result)
+    end
+end
+
+KillingCheats:CreateButton("Auto M1", function()
+    while true do
+        local args = { [1] = "MouseButton1" }
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(args))
+        wait(0.1)
+    end
+end)
+
