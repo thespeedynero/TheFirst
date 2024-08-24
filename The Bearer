@@ -83,7 +83,7 @@ KillingCheats:CreateButton("Kill them", function()
         RunService.Heartbeat:Connect(function()
             local nearestTarget = findNearestTarget()
             if nearestTarget then
-                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, -2, 0), nearestTarget.HumanoidRootPart.Position)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(nearestTarget.HumanoidRootPart.Position - Vector3.new(0, -4, 0), nearestTarget.HumanoidRootPart.Position)
             end
             wait(0.1)
         end)
