@@ -108,3 +108,15 @@ end)
 KillingCheats:CreateButton("Teleport to Position", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1976.4869384765625, 928.8936767578125, -1551.1834716796875)
 end)
+
+KillingCheats:CreateButton("Auto Quest", function()
+while true do
+    local args = {
+        [1] = "Slayer_Quest",
+        [2] = "Gojo"
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer(unpack(args))
+wait(1)
+end
+end)
