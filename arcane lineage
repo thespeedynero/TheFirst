@@ -139,7 +139,7 @@ autoBlockToggle:OnChanged(function(value)
 
         while _G.block do
             remoteFunction:FireServer(unpack(args))
-            locafl response = remoteFunction:InvokeServer(unpack(args))
+            local response = remoteFunction:InvokeServer(unpack(args))
 
             if response == "SomeCondition" then
                 _G.block = false
