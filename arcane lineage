@@ -1,0 +1,260 @@
+local UserInputService = game:GetService("UserInputService")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 25, 0, 25)
+button.Position = UDim2.new(0.5, -25, 0.5, -25)
+button.BackgroundColor3 = Color3.new(0, 0, 0)
+button.Text = "S"
+button.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0.5, 0)
+corner.Parent = button
+
+local dragging = false
+local dragInput
+local dragStart
+local startPos
+
+local function onInputBegan(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = button.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end
+
+local function onInputChanged(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end
+
+local function onInputChangedUpdate(input)
+    if dragging and input == dragInput then
+        local delta = input.Position - dragStart
+        button.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end
+
+button.InputBegan:Connect(onInputBegan)
+button.InputChanged:Connect(onInputChanged)
+UserInputService.InputChanged:Connect(onInputChangedUpdate)
+
+local function toggleScreenGui()
+    local coreGuiScreenGui = game:GetService("CoreGui"):FindFirstChild("ScreenGui")
+    if coreGuiScreenGui then
+        coreGuiScreenGui.Enabled = not coreGuiScreenGui.Enabled
+    end
+end
+
+button.MouseButton1Click:Connect(toggleScreenGui)
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Arcane lineage" .. Fluent.Version,
+    SubTitle = "by speeddes",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true, 
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl 
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main scripts", Icon = "" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local Options = Fluent.Options
+
+local autoDodgeToggle = Tabs.Main:AddToggle("AutoDodge", {
+    Title = "Auto Dodge",
+    Description = "Dodges enemy's attack",
+    Default = false
+})
+
+autoDodgeToggle:OnChanged(function(value)
+    _G.dodge = value
+    
+    if value then
+        local replicatedStorage = game:GetService("ReplicatedStorage")
+        local remoteFunction = replicatedStorage:WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction")
+        
+        local args = {
+            [1] = {
+                [1] = false,
+                [2] = true
+            },
+            [2] = "DodgeMinigame"
+        }
+        
+        while _G.dodge do
+            remoteFunction:FireServer(unpack(args))
+            local response = remoteFunction:InvokeServer(unpack(args))
+            
+            if response == "SomeCondition" then
+                _G.dodge = false
+            end
+            
+            wait(0.1)
+        end
+    end
+end)
+
+local autoBlockToggle = Tabs.Main:AddToggle("AutoBlock", {
+    Title = "Auto Block",
+    Description = "Blocks attacks",
+    Default = false
+})
+
+autoBlockToggle:OnChanged(function(value)
+    _G.block = value
+    
+    if value then
+        local replicatedStorage = game:GetService("ReplicatedStorage")
+        local remoteFunction = replicatedStorage:WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction")
+        
+        local args = {
+            [1] = {
+                [1] = true,
+                [2] = false
+            },
+            [2] = "DodgeMinigame"
+        }
+        
+        while _G.block do
+            remoteFunction:FireServer(unpack(args))
+            local response = remoteFunction:InvokeServer(unpack(args))
+            
+            if response == "SomeCondition" then
+                _G.block = false
+            end
+            
+            wait(0.1)
+        end
+    end
+end)
+
+local flyButton = Tabs.Main:AddButton({
+    Title = "Fly",
+    Description = "Let's you fly",
+    Callback = function()
+        loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
+    end
+})
+
+local collectItemsToggle = Tabs.Main:AddToggle("CollectSpawnedItems", {
+    Title = "Collect Spawned Items",
+    Description = "Lets you collect items",
+    Default = false
+})
+
+local player = game.Players.LocalPlayer
+local spawnedItemsFolder = workspace:WaitForChild("SpawnedItems")
+local collectspawneditems = false
+
+local function teleportToFirstObject()
+    local objects = spawnedItemsFolder:GetChildren()
+    
+    if #objects > 0 then
+        local firstObject = objects[1]
+        
+        if firstObject:IsA("Model") then
+            local parts = firstObject:GetChildren()
+            local targetPart = nil
+            
+            for _, part in ipairs(parts) do
+                if part:IsA("BasePart") then
+                    targetPart = part
+                    break
+                end
+            end
+            
+            if targetPart then
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = targetPart.CFrame
+                end
+            end
+        end
+    end
+end
+
+local function toggleCollectSpawnedItems()
+    collectspawneditems = true
+
+    if player.Character then
+        local character = player.Character
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA('BasePart') then
+                part.CanCollide = false
+            end
+        end
+    end
+end
+
+local function stopCollectingItems()
+    if player.Character then
+        local character = player.Character
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            humanoidRootPart.CanCollide = true
+        end
+
+        local head = character:FindFirstChild("Head")
+        if head then
+            head.CanCollide = true
+        end
+    end
+end
+
+collectItemsToggle:OnChanged(function(value)
+    if value then
+        collectspawneditems = true
+        toggleCollectSpawnedItems()
+
+        while collectspawneditems do
+            teleportToFirstObject()
+            wait(0.1)
+        end
+    else
+        collectspawneditems = false
+        stopCollectingItems()
+    end
+end)
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title = "Arcane lineage",
+    Content = "LEZDUIT.",
+    Duration = 8
+})
+
+SaveManager:LoadAutoloadConfig()
