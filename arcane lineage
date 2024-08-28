@@ -242,7 +242,7 @@ end)
 
 local Toggle = Tabs.Main:AddToggle("Auto minigames", {Title = "auto complete skill minigames", Default = false })
 
-local autominigames = true
+local autominigames = false
 
 local function startAutoMinigames()
     local args = {
@@ -256,8 +256,8 @@ end
 local function stopAutoMinigames()
 end
 
-Toggle:OnChanged(function()
-    if Options.MyToggle.Value then
+Toggle:OnChanged(function(value)
+    if value then
         autominigames = true
         task.spawn(function()
             while autominigames do
@@ -270,6 +270,7 @@ Toggle:OnChanged(function()
         stopAutoMinigames()
     end
 end)
+
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
