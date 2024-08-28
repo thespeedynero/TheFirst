@@ -269,8 +269,6 @@ Toggle:OnChanged(function(value)
     end
 end)
 
-Toggle:SetValue(false)
-
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
