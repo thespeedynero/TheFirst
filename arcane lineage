@@ -258,6 +258,9 @@ autoMinigamesToggle:OnChanged(function(value)
     end
 end)
 
+-- Debug output
+print("AutoMinigamesToggle added successfully")
+
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
