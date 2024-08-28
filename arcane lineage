@@ -257,7 +257,6 @@ end
 
 Toggle:OnChanged(function(value)
     autominigames = value
-
     if autominigames then
         task.spawn(function()
             while autominigames do
@@ -269,8 +268,6 @@ Toggle:OnChanged(function(value)
         stopAutoMinigames()
     end
 end)
-
-Options.AutoMinigamesToggle:SetValue(false)
 
 
 
