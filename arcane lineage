@@ -240,7 +240,7 @@ collectItemsToggle:OnChanged(function(value)
     end
 end)
 
-local Toggle = Tabs.Main:AddToggle("Auto minigames", {Title = "auto complete skill minigames", Default = false })
+local Toggle = Tabs.Main:AddToggle("AutoMinigamesToggle", {Title = "Auto complete skill minigames", Default = false})
 
 local autominigames = false
 
@@ -249,7 +249,6 @@ local function startAutoMinigames()
         [1] = true,
         [2] = "FistQTE"
     }
-
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction"):FireServer(unpack(args))
 end
 
@@ -257,8 +256,9 @@ local function stopAutoMinigames()
 end
 
 Toggle:OnChanged(function(value)
-    if value then
-        autominigames = true
+    autominigames = value
+
+    if autominigames then
         task.spawn(function()
             while autominigames do
                 startAutoMinigames()
@@ -266,10 +266,12 @@ Toggle:OnChanged(function(value)
             end
         end)
     else
-        autominigames = false
         stopAutoMinigames()
     end
 end)
+
+Options.AutoMinigamesToggle:SetValue(false)
+
 
 
 SaveManager:SetLibrary(Fluent)
