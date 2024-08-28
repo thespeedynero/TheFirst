@@ -56,10 +56,7 @@ button.InputChanged:Connect(onInputChanged)
 UserInputService.InputChanged:Connect(onInputChangedUpdate)
 
 local function toggleScreenGui()
-    local coreGuiScreenGui = game:GetService("CoreGui"):FindFirstChild("ScreenGui")
-    if coreGuiScreenGui then
-        coreGuiScreenGui.Enabled = not coreGuiScreenGui.Enabled
-    end
+    screenGui.Enabled = not screenGui.Enabled
 end
 
 button.MouseButton1Click:Connect(toggleScreenGui)
@@ -69,7 +66,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Arcane lineage" .. Fluent.Version,
+    Title = "Arcane lineage " .. Fluent.Version,
     SubTitle = "by speeddes",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -93,11 +90,11 @@ local autoDodgeToggle = Tabs.Main:AddToggle("AutoDodge", {
 
 autoDodgeToggle:OnChanged(function(value)
     _G.dodge = value
-    
+
     if value then
         local replicatedStorage = game:GetService("ReplicatedStorage")
         local remoteFunction = replicatedStorage:WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction")
-        
+
         local args = {
             [1] = {
                 [1] = false,
@@ -105,15 +102,15 @@ autoDodgeToggle:OnChanged(function(value)
             },
             [2] = "DodgeMinigame"
         }
-        
+
         while _G.dodge do
             remoteFunction:FireServer(unpack(args))
             local response = remoteFunction:InvokeServer(unpack(args))
-            
+
             if response == "SomeCondition" then
                 _G.dodge = false
             end
-            
+
             wait(0.1)
         end
     end
@@ -127,11 +124,11 @@ local autoBlockToggle = Tabs.Main:AddToggle("AutoBlock", {
 
 autoBlockToggle:OnChanged(function(value)
     _G.block = value
-    
+
     if value then
         local replicatedStorage = game:GetService("ReplicatedStorage")
         local remoteFunction = replicatedStorage:WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction")
-        
+
         local args = {
             [1] = {
                 [1] = true,
@@ -139,15 +136,15 @@ autoBlockToggle:OnChanged(function(value)
             },
             [2] = "DodgeMinigame"
         }
-        
+
         while _G.block do
             remoteFunction:FireServer(unpack(args))
             local response = remoteFunction:InvokeServer(unpack(args))
-            
+
             if response == "SomeCondition" then
                 _G.block = false
             end
-            
+
             wait(0.1)
         end
     end
@@ -173,21 +170,21 @@ local collectspawneditems = false
 
 local function teleportToFirstObject()
     local objects = spawnedItemsFolder:GetChildren()
-    
+
     if #objects > 0 then
         local firstObject = objects[1]
-        
+
         if firstObject:IsA("Model") then
             local parts = firstObject:GetChildren()
             local targetPart = nil
-            
+
             for _, part in ipairs(parts) do
                 if part:IsA("BasePart") then
                     targetPart = part
                     break
                 end
             end
-            
+
             if targetPart then
                 if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                     player.Character.HumanoidRootPart.CFrame = targetPart.CFrame
@@ -213,14 +210,10 @@ end
 local function stopCollectingItems()
     if player.Character then
         local character = player.Character
-        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
-        if humanoidRootPart then
-            humanoidRootPart.CanCollide = true
-        end
-
-        local head = character:FindFirstChild("Head")
-        if head then
-            head.CanCollide = true
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA('BasePart') then
+                part.CanCollide = true
+            end
         end
     end
 end
@@ -238,8 +231,12 @@ collectItemsToggle:OnChanged(function(value)
         collectspawneditems = false
         stopCollectingItems()
     end
+end)
 
-local Toggle = Tabs.Main:AddToggle("AutoMinigamesToggle", {Title = "Auto complete skill minigames", Default = false})
+local autoMinigamesToggle = Tabs.Main:AddToggle("AutoMinigamesToggle", {
+    Title = "Auto complete skill minigames",
+    Default = false
+})
 
 local autominigames = false
 
@@ -251,48 +248,44 @@ local function startAutoMinigames()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction"):FireServer(unpack(args))
 end
 
-local function stopAutoMinigames()
-
-local autominigames = false
-
-local function stopAutoMinigames()
-end
-
-stopAutoMinigames()
-
-end
-
-Toggle:OnChanged(function(value)
+autoMinigamesToggle:OnChanged(function(value)
     autominigames = value
     if autominigames then
-        task.spawn(function()
-            while autominigames do
-                startAutoMinigames()
-                wait(0.1)
-            end
-        end)
-    else
-        stopAutoMinigames()
+        while autominigames do
+            startAutoMinigames()
+            wait(0.1)
+        end
     end
 end)
 
-
-
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
+
+-- Ignore keys that are used by ThemeManager.
+-- (we dont want configs to save themes, do we?)
 SaveManager:IgnoreThemeSettings()
+
+-- You can add indexes of elements the save manager should ignore
 SaveManager:SetIgnoreIndexes({})
+
+-- use case for doing it this way:
+-- a script hub could have themes in a global folder
+-- and game configs in a separate folder per game
 InterfaceManager:SetFolder("FluentScriptHub")
 SaveManager:SetFolder("FluentScriptHub/specific-game")
+
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
+
 
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = "Arcane lineage",
-    Content = "LEZDUIT.",
+    Title = "Fluent",
+    Content = "The script has been loaded.",
     Duration = 8
 })
 
+-- You can use the SaveManager:LoadAutoloadConfig() to load a config
+-- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
