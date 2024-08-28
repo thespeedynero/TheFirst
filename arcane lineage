@@ -238,7 +238,6 @@ collectItemsToggle:OnChanged(function(value)
         collectspawneditems = false
         stopCollectingItems()
     end
-end)
 
 local Toggle = Tabs.Main:AddToggle("AutoMinigamesToggle", {Title = "Auto complete skill minigames", Default = false})
 
